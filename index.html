@@ -86,7 +86,6 @@
     <button id="selectFunctionButton">选择功能</button>
     <div id="functionSelector">
         <button id="iconSearchOption">批量icon检索</button>
-        <button id="iosLoginOption">IOS一键上号</button>
         <button id="dumpProcessingOption">Dump内容修正处理工具</button>
     </div>
     <!-- 批量icon检索功能区域 -->
@@ -115,138 +114,33 @@
                     return;
                 }
                 const lines = inputText.split(/[\n, ]+/).filter(line => line.trim()!== '');
-                if (lines.length === 0) {
+                const uniqueValidNumbers = [];
+                lines.forEach(line => {
+                    const numbers = line.replace(/\D/g, '');
+                    if (numbers.length >= 6 &&!uniqueValidNumbers.includes(numbers)) {
+                        uniqueValidNumbers.push(numbers);
+                    }
+                });
+                if (uniqueValidNumbers.length === 0) {
                     errorMessage.textContent = '输入内容无有效数字组合！';
                     return;
                 }
-                lines.forEach((line, index) => {
-                    const trimmedLine = line.trim();
-                    const imageUrl = `https://imgcdn.gp.qq.com/images/itemicon/v15/${trimmedLine}.png`;
+                uniqueValidNumbers.forEach((number, index) => {
+                    const imageUrl = `https://imgcdn.gp.qq.com/images/itemicon/v15/${number}.png`;
                     const resultItem = document.createElement('div');
                     resultItem.className ='result-item';
                     const title = document.createElement('p');
-                    title.textContent = `输入值: ${trimmedLine}`;
+                    title.textContent = `输入值: ${number}`;
                     resultItem.appendChild(title);
                     const img = document.createElement('img');
                     img.src = imageUrl;
-                    img.alt = `生成的图片 ${trimmedLine}`;
+                    img.alt = `生成的图片 ${number}`;
                     resultItem.appendChild(img);
                     results.appendChild(resultItem);
                 });
-                infoMessage.textContent = `共处理了 ${lines.length} 个输入值。`;
+                infoMessage.textContent = `共处理了 ${uniqueValidNumbers.length} 个输入值。`;
             });
         </script>
-    </section>
-    <!-- IOS一键上号功能区域 -->
-    <section id="ios-login">
-        <h1>IOS一键上号</h1>
-        <form>
-            <div class="input-group">
-                <label for="url">数据号URL:</label>
-                <textarea id="url" name="url" required placeholder="请输入完整数据号URL例如：_Callback({xxxxx});"></textarea>
-            </div>
-            <button type="button" id="submitButton">上号</button>
-            <div class="input-group">
-                <label for="convertedContent">转换后的内容:</label>
-                <textarea id="convertedContent" readonly></textarea>
-            </div>
-            <button type="button" id="copyButton">复制</button>
-            <button type="button" id="convertButton">转换</button>
-            <div class="error-message" id="message"></div>
-            <script>
-                const submitButton = document.getElementById('submitButton');
-                const copyButton = document.getElementById('copyButton');
-                const convertButton = document.getElementById('convertButton');
-                const urlInput = document.getElementById('url');
-                const convertedContent = document.getElementById('convertedContent');
-                const messageDiv = document.getElementById('message');
-
-                submitButton.addEventListener('click', () => {
-                    messageDiv.textContent = '';
-                    const url = urlInput.value;
-                    const accessToken = url.split('access_token=')[1]?.split('&')[0];
-                    const openid = url.split('openid=')[1]?.split('&')[0];
-                    const payToken = url.split('pay_token=')[1]?.split('&')[0];
-                    if (!accessToken ||!openid ||!payToken) {
-                        messageDiv.textContent = "URL中缺少必要的参数。";
-                        return;
-                    }
-                    // 此处fetch请求代码暂未完整，需根据实际后端接口调整
-                    fetch('/generate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `access=${accessToken}&openid=${openid}&pay=${payToken}`
-                    })
-                   .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
-                            return response.json().then(data => {
-                                messageDiv.textContent = data.message || '网络异常，请稍后重试';
-                                throw new Error(`Network response was not ok: ${response.statusText}`);
-                            });
-                        }
-                    })
-                   .then(data => {
-                        if (data.url) {
-                            messageDiv.textContent = '上号成功，请允许打开游戏!!';
-                            // 此处window.location.href = data.url; 需确认安全性
-                        } else {
-                            messageDiv.textContent = data.message || '上号失败，请检查数据号URL是否正确！！';
-                        }
-                    })
-                   .catch(error => {
-                        console.error('Error:', error);
-                    });
-                });
-
-                convertButton.addEventListener('click', () => {
-                    const url = urlInput.value;
-                    const accessToken = url.split('access_token=')[1]?.split('&')[0];
-                    const openid = url.split('openid=')[1]?.split('&')[0];
-                    const payToken = url.split('pay_token=')[1]?.split('&')[0];
-                    if (!accessToken ||!openid ||!payToken) {
-                        convertedContent.textContent = "URL中缺少必要的参数。";
-                        return;
-                    }
-                    // 此处fetch请求代码暂未完整，需根据实际后端接口调整
-                    fetch('/generate', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
-                        },
-                        body: `access=${accessToken}&openid=${openid}&pay=${payToken}`
-                    })
-                   .then(response => response.json())
-                   .then(data => {
-                        if (data.url) {
-                            convertedContent.textContent = data.url;
-                        } else {
-                            convertedContent.textContent = data.message || '转换失败。';
-                        }
-                    })
-                   .catch(error => {
-                        console.error('Error:', error);
-                    });
-                });
-
-                copyButton.addEventListener('click', () => {
-                    const content = convertedContent.textContent;
-                    if (content) {
-                        navigator.clipboard.writeText(content).then(() => {
-                            alert('转换后的内容已复制到剪贴板！');
-                        }).catch(err => {
-                            console.error("复制失败:", err);
-                            alert("复制失败，请手动选择文本复制");
-                        });
-                    } else {
-                        alert("没有可复制的内容");
-                    }
-                });
-            </script>
-        </form>
     </section>
     <!-- Dump内容修正处理工具功能区域 -->
     <section id="dump-processing">
@@ -273,7 +167,6 @@
             const processedText = document.getElementById('processedText');
             const downloadButton = document.getElementById('downloadButton');
             const copyDumpButton = document.getElementById('copyDumpButton');
-
             processDumpButton.addEventListener('click', () => {
                 if (!fileInput.files.length) {
                     alert("请选择一个TXT文件");
@@ -298,7 +191,6 @@
                 };
                 reader.readAsText(file);
             });
-
             downloadButton.addEventListener('click', () => {
                 if (!processedContent) {
                     alert("没有可下载的内容");
@@ -317,7 +209,6 @@
                 link.click();
                 document.body.removeChild(link);
             });
-
             copyDumpButton.addEventListener('click', () => {
                 if (!processedContent) {
                     alert("没有可复制的内容");
@@ -336,38 +227,23 @@
         const selectFunctionButton = document.getElementById('selectFunctionButton');
         const functionSelector = document.getElementById('functionSelector');
         const iconSearchOption = document.getElementById('iconSearchOption');
-        const iosLoginOption = document.getElementById('iosLoginOption');
         const dumpProcessingOption = document.getElementById('dumpProcessingOption');
         const iconSearchSection = document.getElementById('icon-search');
-        const iosLoginSection = document.getElementById('ios-login');
         const dumpProcessingSection = document.getElementById('dump-processing');
         const title = document.getElementById('title');
-
         selectFunctionButton.addEventListener('click', () => {
             functionSelector.style.display = 'block';
         });
-
         iconSearchOption.addEventListener('click', () => {
             functionSelector.style.display = 'none';
             iconSearchSection.style.display = 'block';
-            iosLoginSection.style.display = 'none';
             dumpProcessingSection.style.display = 'none';
             title.style.display = 'none';
         });
-
-        iosLoginOption.addEventListener('click', () => {
-            functionSelector.style.display = 'none';
-            iosLoginSection.style.display = 'block';
-            iconSearchSection.style.display = 'none';
-            dumpProcessingSection.style.display = 'none';
-            title.style.display = 'none';
-        });
-
         dumpProcessingOption.addEventListener('click', () => {
             functionSelector.style.display = 'none';
             dumpProcessingSection.style.display = 'block';
             iconSearchSection.style.display = 'none';
-            iosLoginSection.style.display = 'none';
             title.style.display = 'none';
         });
     </script>
