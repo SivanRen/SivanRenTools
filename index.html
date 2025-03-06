@@ -1,251 +1,1139 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>功能插件选择</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #000;
-            color: #fff;
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        #functionSelector {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-        }
-        section {
-            display: none;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #1a1a1a;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-        }
-       .input-group {
-            margin-bottom: 15px;
-        }
-        textarea {
-            width: 100%;
-            padding: 10px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #333;
-            color: #fff;
-        }
-       .error-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-       .info-message {
-            color: orange;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-       .results {
-            margin-top: 20px;
-        }
-       .result-item {
-            margin-bottom: 20px;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 5px;
-        }
-    </style>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>功能插件选择</title>
+
+<style>
+
+
+body {
+
+
+
+font-family: Arial, sans-serif;
+
+
+
+margin: 0;
+
+
+
+padding: 20px;
+
+
+
+background-color: #000;
+
+
+
+color: #fff;
+
+
+}
+
+
+
+h1 {
+
+
+
+text-align: center;
+
+
+
+margin-bottom: 20px;
+
+
+}
+
+
+
+button {
+
+
+
+width: 100%;
+
+
+
+padding: 10px;
+
+
+
+font-size: 16px;
+
+
+
+background-color: #4CAF50;
+
+
+
+color: white;
+
+
+
+border: none;
+
+
+
+border-radius: 5px;
+
+
+
+cursor: pointer;
+
+
+}
+
+
+
+button:hover {
+
+
+
+background-color: #45a049;
+
+
+}
+
+
+
+#functionSelector {
+
+
+
+display: none;
+
+
+
+max-width: 600px;
+
+
+
+margin: 0 auto;
+
+
+
+padding: 20px;
+
+
+
+background-color: #1a1a1a;
+
+
+
+border-radius: 8px;
+
+
+
+box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+
+
+}
+
+
+
+section {
+
+
+
+display: none;
+
+
+
+max-width: 600px;
+
+
+
+margin: 0 auto;
+
+
+
+padding: 20px;
+
+
+
+background-color: #1a1a1a;
+
+
+
+border-radius: 8px;
+
+
+
+box-shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
+
+
+}
+
+   
+.input-group {
+
+
+
+margin-bottom: 15px;
+
+
+}
+
+
+
+textarea {
+
+
+
+width: 100%;
+
+
+
+padding: 10px;
+
+
+
+font-size: 16px;
+
+
+
+border: 1px solid #ddd;
+
+
+
+border-radius: 5px;
+
+
+
+background-color: #333;
+
+
+
+color: #fff;
+
+
+}
+
+   
+.error-message {
+
+
+
+color: red;
+
+
+
+font-size: 14px;
+
+
+
+margin-top: 10px;
+
+
+}
+
+   
+.info-message {
+
+
+
+color: orange;
+
+
+
+font-size: 14px;
+
+
+
+margin-top: 10px;
+
+
+}
+
+   
+.results {
+
+
+
+margin-top: 20px;
+
+
+}
+
+   
+.result-item {
+
+
+
+margin-bottom: 20px;
+
+
+}
+
+
+
+img {
+
+
+
+max-width: 100%;
+
+
+
+border-radius: 5px;
+
+
+}
+
+</style>
 </head>
+
 <body>
-    <h1 id="title">选择功能</h1>
-    <button id="selectFunctionButton">选择功能</button>
-    <div id="functionSelector">
-        <button id="iconSearchOption">批量icon检索</button>
-        <button id="dumpProcessingOption">Dump内容修正处理工具</button>
-    </div>
-    <!-- 批量icon检索功能区域 -->
-    <section id="icon-search">
-        <h1>批量icon检索</h1>
-        <div class="input-group">
-            <textarea id="content-input" placeholder="请输入多个数字组合，用逗号、换行或空格分隔"></textarea>
-        </div>
-        <button id="process-button">开始检索</button>
-        <div class="error-message" id="error-message"></div>
-        <div class="info-message" id="info-message"></div>
-        <div class="results" id="results"></div>
-        <script>
-            const processButton = document.getElementById('process-button');
-            const contentInput = document.getElementById('content-input');
-            const errorMessage = document.getElementById('error-message');
-            const infoMessage = document.getElementById('info-message');
-            const results = document.getElementById('results');
-            processButton.addEventListener('click', () => {
-                errorMessage.textContent = '';
-                infoMessage.textContent = '';
-                results.innerHTML = '';
-                const inputText = contentInput.value.trim();
-                if (!inputText) {
-                    errorMessage.textContent = '请输入内容！';
-                    return;
-                }
-                const lines = inputText.split(/[\n, ]+/).filter(line => line.trim()!== '');
-                const uniqueValidNumbers = [];
-                lines.forEach(line => {
-                    const numbers = line.replace(/\D/g, '');
-                    if (numbers.length >= 6 &&!uniqueValidNumbers.includes(numbers)) {
-                        uniqueValidNumbers.push(numbers);
-                    }
-                });
-                if (uniqueValidNumbers.length === 0) {
-                    errorMessage.textContent = '输入内容无有效数字组合！';
-                    return;
-                }
-                uniqueValidNumbers.forEach((number, index) => {
-                    const imageUrl = `https://imgcdn.gp.qq.com/images/itemicon/v15/${number}.png`;
-                    const resultItem = document.createElement('div');
-                    resultItem.className ='result-item';
-                    const title = document.createElement('p');
-                    title.textContent = `输入值: ${number}`;
-                    resultItem.appendChild(title);
-                    const img = document.createElement('img');
-                    img.src = imageUrl;
-                    img.alt = `生成的图片 ${number}`;
-                    resultItem.appendChild(img);
-                    results.appendChild(resultItem);
-                });
-                infoMessage.textContent = `共处理了 ${uniqueValidNumbers.length} 个输入值。`;
-            });
-        </script>
-    </section>
-    <!-- Dump内容修正处理工具功能区域 -->
-    <section id="dump-processing">
-        <h1>Dump内容修正处理工具</h1>
-        <div class="input-group">
-            <input type="file" id="fileInput" accept=".txt">
-        </div>
-        <button id="processDumpButton">处理文件</button>
-        <div class="input-group">
-            <h3>原始内容</h3>
-            <textarea id="originalText" readonly></textarea>
-        </div>
-        <div class="input-group">
-            <h3>处理后的内容</h3>
-            <textarea id="processedText" readonly></textarea>
-        </div>
-        <button id="downloadButton" style="display: none;">下载文件</button>
-        <button id="copyDumpButton" style="display: none;">一键复制</button>
-        <script>
-            let processedContent = '';
-            const processDumpButton = document.getElementById('processDumpButton');
-            const fileInput = document.getElementById('fileInput');
-            const originalText = document.getElementById('originalText');
-            const processedText = document.getElementById('processedText');
-            const downloadButton = document.getElementById('downloadButton');
-            const copyDumpButton = document.getElementById('copyDumpButton');
-            processDumpButton.addEventListener('click', () => {
-                if (!fileInput.files.length) {
-                    alert("请选择一个TXT文件");
-                    return;
-                }
-                const file = fileInput.files[0];
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const lines = event.target.result.split(/\r?\n/);
-                    originalText.textContent = lines.join("\n");
-                    const processedLines = lines.map(line => {
-                        const match = line.match(/ID--(\d+); ID2--(\d+); offset--0x[0-9A-Fa-f]+ name--(.+); describe--(.+);/);
-                        if (match) {
-                            return `${match[3]} -- ${match[1]} -- ${match[2]}`;
-                        }
-                        return '';
-                    }).filter(line => line!== '');
-                    processedContent = processedLines.join('\n');
-                    processedText.textContent = processedContent;
-                    downloadButton.style.display = "block";
-                    copyDumpButton.style.display = "block";
-                };
-                reader.readAsText(file);
-            });
-            downloadButton.addEventListener('click', () => {
-                if (!processedContent) {
-                    alert("没有可下载的内容");
-                    return;
-                }
-                const date = new Date();
-                const month = String(date.getMonth() + 1).padStart(2, '0');
-                const day = String(date.getDate()).padStart(2, '0');
-                const dateStr = month + day;
-                const fileName = `UE4Dump${dateStr}.txt`;
-                const blob = new Blob([processedContent], { type: "text/plain" });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = fileName;
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            });
-            copyDumpButton.addEventListener('click', () => {
-                if (!processedContent) {
-                    alert("没有可复制的内容");
-                    return;
-                }
-                navigator.clipboard.writeText(processedContent).then(() => {
-                    alert("内容已复制到剪贴板！");
-                }).catch(err => {
-                    console.error("复制失败:", err);
-                    alert("复制失败，请手动选择文本复制");
-                });
-            });
-        </script>
-    </section>
-    <script>
-        const selectFunctionButton = document.getElementById('selectFunctionButton');
-        const functionSelector = document.getElementById('functionSelector');
-        const iconSearchOption = document.getElementById('iconSearchOption');
-        const dumpProcessingOption = document.getElementById('dumpProcessingOption');
-        const iconSearchSection = document.getElementById('icon-search');
-        const dumpProcessingSection = document.getElementById('dump-processing');
-        const title = document.getElementById('title');
-        selectFunctionButton.addEventListener('click', () => {
-            functionSelector.style.display = 'block';
-        });
-        iconSearchOption.addEventListener('click', () => {
-            functionSelector.style.display = 'none';
-            iconSearchSection.style.display = 'block';
-            dumpProcessingSection.style.display = 'none';
-            title.style.display = 'none';
-        });
-        dumpProcessingOption.addEventListener('click', () => {
-            functionSelector.style.display = 'none';
-            dumpProcessingSection.style.display = 'block';
-            iconSearchSection.style.display = 'none';
-            title.style.display = 'none';
-        });
-    </script>
+
+<h1 id="title">选择功能</h1>
+
+<button id="selectFunctionButton">选择功能</button>
+
+<div id="functionSelector">
+
+
+<button id="iconSearchOption">批量 icon 检索</button>
+
+
+<button id="dumpProcessingOption">Dump 内容修正处理工具</button>
+
+</div>
+
+<!-- 批量 icon 检索功能区域 -->
+
+<section id="icon-search">
+
+
+<h1>批量 icon 检索</h1>
+
+
+<div class="input-group">
+
+
+
+<textarea id="content-input"
+
+
+
+
+placeholder="请输入多个数字组合，用逗号、换行或空格分隔"></textarea>
+
+
+</div>
+
+
+<button id="process-button">开始检索</button>
+
+
+<div class="error-message" id="error-message"></div>
+
+
+<div class="info-message" id="info-message"></div>
+
+
+<div class="results" id="results"></div>
+
+
+<button id="downloadButton" style="display: none;" onclick="downloadIcons()">一键下载所有图标</button>
+
+
+<script>
+
+
+
+const processButton = document.getElementById('process-button');
+
+
+
+const contentInput = document.getElementById('content-input');
+
+
+
+const errorMessage = document.getElementById('error-message');
+
+
+
+const infoMessage = document.getElementById('info-message');
+
+
+
+const results = document.getElementById('results');
+
+
+
+const downloadButton = document.getElementById('downloadButton');
+
+
+
+
+processButton.addEventListener('click', () => {
+
+
+
+
+errorMessage.textContent = '';
+
+
+
+
+infoMessage.textContent = '';
+
+
+
+
+results.innerHTML = '';
+
+
+
+
+const inputText = contentInput.value.trim();
+
+
+
+
+if (!inputText) {
+
+
+
+
+
+errorMessage.textContent = '请输入内容！';
+
+
+
+
+
+return;
+
+
+
+
+}
+
+
+
+
+const lines = inputText.split(/\r?\n/).filter(line => line.trim()!== '');
+
+
+
+
+const validEntries = [];
+
+
+
+
+lines.forEach(line => {
+
+
+
+
+
+const nameMatch = line.match(/([^--]+)\s*--\s*(\d+)\s*--\s*(\d+)/);
+
+
+
+
+
+const numberMatch = line.match(/\d+/);
+
+
+
+
+
+if (nameMatch) {
+
+
+
+
+
+
+const name = nameMatch[1].trim();
+
+
+
+
+
+
+const number = nameMatch[2].trim();
+
+
+
+
+
+
+validEntries.push({ name, number });
+
+
+
+
+
+} else if (numberMatch) {
+
+
+
+
+
+
+const number = numberMatch[0].trim();
+
+
+
+
+
+
+validEntries.push({ name: "Null", number });
+
+
+
+
+
+}
+
+
+
+
+});
+
+
+
+
+if (validEntries.length === 0) {
+
+
+
+
+
+errorMessage.textContent = '输入内容无有效条目！';
+
+
+
+
+
+return;
+
+
+
+
+}
+
+
+
+
+validEntries.forEach(entry => {
+
+
+
+
+
+const imageUrl = `https://imgcdn.gp.qq.com/images/itemicon/v15/${entry.number}.png`;
+
+
+
+
+
+const resultItem = document.createElement('div');
+
+
+
+
+
+resultItem.className ='result-item';
+
+
+
+
+
+const title = document.createElement('p');
+
+
+
+
+
+title.textContent = `${entry.name} 输出值: ${entry.number}`;
+
+
+
+
+
+resultItem.appendChild(title);
+
+
+
+
+
+const img = document.createElement('img');
+
+
+
+
+
+img.src = imageUrl;
+
+
+
+
+
+img.alt = `生成的图片 ${entry.number}`;
+
+
+
+
+
+resultItem.appendChild(img);
+
+
+
+
+
+results.appendChild(resultItem);
+
+
+
+
+});
+
+
+
+
+infoMessage.textContent = `共处理了 ${validEntries.length} 个输入值。`;
+
+
+
+
+downloadButton.style.display = 'block';
+
+
+
+});
+
+
+
+
+function downloadIcons() {
+
+
+
+
+const imgs = document.querySelectorAll('#results img');
+
+
+
+
+imgs.forEach(img => {
+
+
+
+
+
+const a = document.createElement('a');
+
+
+
+
+
+a.href = img.src;
+
+
+
+
+
+a.download = img.src.split('/').pop();
+
+
+
+
+
+a.click();
+
+
+
+
+});
+
+
+
+}
+
+
+</script>
+
+</section>
+
+<!-- Dump 内容修正处理工具功能区域 -->
+
+<section id="dump-processing">
+
+
+<h1>Dump 内容修正处理工具</h1>
+
+
+<div class="input-group">
+
+
+
+<input type="file" id="fileInput" accept=".txt">
+
+
+</div>
+
+
+<button id="processDumpButton">处理文件</button>
+
+
+<div class="input-group">
+
+
+
+<h3>原始内容</h3>
+
+
+
+<textarea id="originalText" readonly></textarea>
+
+
+</div>
+
+
+<div class="input-group">
+
+
+
+<h3>处理后的内容</h3>
+
+
+
+<textarea id="processedText" readonly></textarea>
+
+
+</div>
+
+
+<button id="downloadButton" style="display: none;">下载文件</button>
+
+
+<button id="copyDumpButton" style="display: none;">一键复制</button>
+
+
+<script>
+
+
+
+let processedContent = '';
+
+
+
+const processDumpButton = document.getElementById('processDumpButton');
+
+
+
+const fileInput = document.getElementById('fileInput');
+
+
+
+const originalText = document.getElementById('originalText');
+
+
+
+const processedText = document.getElementById('processedText');
+
+
+
+const downloadButton = document.getElementById('downloadButton');
+
+
+
+const copyDumpButton = document.getElementById('copyDumpButton');
+
+
+
+
+processDumpButton.addEventListener('click', () => {
+
+
+
+
+if (!fileInput.files.length) {
+
+
+
+
+
+alert("请选择一个 TXT 文件");
+
+
+
+
+
+return;
+
+
+
+
+}
+
+
+
+
+const file = fileInput.files[0];
+
+
+
+
+const reader = new FileReader();
+
+
+
+
+reader.onload = function (event) {
+
+
+
+
+
+const lines = event.target.result.split(/\r?\n/);
+
+
+
+
+
+originalText.textContent = lines.join("\n");
+
+
+
+
+
+const processedLines = lines.map(line => {
+
+
+
+
+
+
+const match = line.match(/ID--(\d+); ID2--(\d+); offset--0x[0-9A-Fa-f]+ name--(.+); describe--(.+);/);
+
+
+
+
+
+
+if (match) {
+
+
+
+
+
+
+
+return `${match[3]} -- ${match[1]} -- ${match[2]}`;
+
+
+
+
+
+
+}
+
+
+
+
+
+
+return '';
+
+
+
+
+
+}).filter(line => line!== '');
+
+
+
+
+
+processedContent = processedLines.join('\n');
+
+
+
+
+
+processedText.textContent = processedContent;
+
+
+
+
+
+downloadButton.style.display = "block";
+
+
+
+
+
+copyDumpButton.style.display = "block";
+
+
+
+
+};
+
+
+
+
+reader.readAsText(file);
+
+
+
+});
+
+
+
+
+downloadButton.addEventListener('click', () => {
+
+
+
+
+if (!processedContent) {
+
+
+
+
+
+alert("没有可下载的内容");
+
+
+
+
+
+return;
+
+
+
+
+}
+
+
+
+
+const date = new Date();
+
+
+
+
+const month = String(date.getMonth() + 1).padStart(2, '0');
+
+
+
+
+const day = String(date.getDate()).padStart(2, '0');
+
+
+
+
+const dateStr = month + day;
+
+
+
+
+const fileName = `UE4Dump${dateStr}.txt`;
+
+
+
+
+const blob = new Blob([processedContent], { type: "text/plain" });
+
+
+
+
+const link = document.createElement('a');
+
+
+
+
+link.href = URL.createObjectURL(blob);
+
+
+
+
+link.download = fileName;
+
+
+
+
+document.body.appendChild(link);
+
+
+
+
+link.click();
+
+
+
+
+document.body.removeChild(link);
+
+
+
+});
+
+
+
+
+copyDumpButton.addEventListener('click', () => {
+
+
+
+
+if (!processedContent) {
+
+
+
+
+
+alert("没有可复制的内容");
+
+
+
+
+
+return;
+
+
+
+
+}
+
+
+
+
+navigator.clipboard.writeText(processedContent).then(() => {
+
+
+
+
+
+alert("内容已复制到剪贴板！");
+
+
+
+
+}).catch(err => {
+
+
+
+
+
+console.error("复制失败:", err);
+
+
+
+
+
+alert("复制失败，请手动选择文本复制");
+
+
+
+
+});
+
+
+
+});
+
+
+</script>
+
+</section>
+
+<script>
+
+
+const selectFunctionButton = document.getElementById('selectFunctionButton');
+
+
+const functionSelector = document.getElementById('functionSelector');
+
+
+const iconSearchOption = document.getElementById('iconSearchOption');
+
+
+const dumpProcessingOption = document.getElementById('dumpProcessingOption');
+
+
+const iconSearchSection = document.getElementById('icon-search');
+
+
+const dumpProcessingSection = document.getElementById('dump-processing');
+
+
+const title = document.getElementById('title');
+
+
+
+selectFunctionButton.addEventListener('click', () => {
+
+
+
+functionSelector.style.display = 'block';
+
+
+});
+
+
+
+iconSearchOption.addEventListener('click', () => {
+
+
+
+functionSelector.style.display = 'none';
+
+
+
+iconSearchSection.style.display = 'block';
+
+
+
+dumpProcessingSection.style.display = 'none';
+
+
+
+title.style.display = 'none';
+
+
+});
+
+
+
+dumpProcessingOption.addEventListener('click', () => {
+
+
+
+functionSelector.style.display = 'none';
+
+
+
+dumpProcessingSection.style.display = 'block';
+
+
+
+iconSearchSection.style.display = 'none';
+
+
+
+title.style.display = 'none';
+
+
+});
+
+</script>
 </body>
+
 </html>
