@@ -282,7 +282,7 @@
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const day = String(date.getDate()).padStart(2, '0');
       const dateStr = month + day;
-      const fileName = `UE4Dump${dateStr}.txt`;
+      const fileName = `CG31UE4Dump${dateStr}.txt`;
       const blob = new Blob([processedContent], { type: "text/plain" });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
